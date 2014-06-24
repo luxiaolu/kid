@@ -14,15 +14,16 @@ class WSGIApplication(object):
                                         self.request['PATH_INFO'])
         if request_key in self.responce_func_dic:
             responce_func = self.responce_func_dic[request_key] 
+            self.responce_callback('200 OK', [('Contend-Type', 'text/html')])
             return responce_func()
         else:
+            self.responce_callback('200 OK', [('Contend-Type', 'text/html')])
             return "server error"
 
     def get_wsgi_application(self):
         def wsgi(env, start_responce):
             self.request = env
             self.responce_callback = start_responce
-            self.responce_callback('200 OK', [('Contend-Type', 'text/html')])
             return self.responce()
         return wsgi
 
